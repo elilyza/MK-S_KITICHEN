@@ -230,6 +230,10 @@ function showMissingFields() {
   statusMessage.textContent = `Please add ${missing.join(", ")} first.`;
 }
 
+function isLocalPreview() {
+  return ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+}
+
 function encodeFormData(data) {
   return new URLSearchParams(data).toString();
 }
@@ -286,31 +290,45 @@ async function submitOrderForm(event) {
 
   syncNetlifyFields();
   const payload = buildOrderPayload();
+
+  if (isLocalPreview()) {
+    await copyOrderMessage();
+    statusMessage.textContent =
+      "Local preview cannot send orders. Open https://mkskitchen.netlify.app to test Submit order, or paste the copied order into a text to 571-535-9722.";
+    return;
+  }
+
   submitOrder.disabled = true;
   submitOrder.classList.add("is-disabled");
   statusMessage.textContent = "Sending your order to MK'S Kitchen...";
 
   try {
-    await submitToOrderFunction(payload);
+    await submitToNetlifyForms(payload);
+
+    try {
+      await submitToOrderFunction(payload);
+    } catch {
+      // Netlify Forms captured the order; SMS/email provider keys may not be configured yet.
+    }
+
     orderForm.reset();
     cart.clear();
     setDefaultOrderTime();
     renderCart();
-    statusMessage.textContent = "Order sent. Thank you. MK'S Kitchen received your order.";
+    statusMessage.textContent = "Order submitted. Thank you. MK'S Kitchen received your order.";
   } catch {
     try {
-      await submitToNetlifyForms(payload);
+      await submitToOrderFunction(payload);
       orderForm.reset();
       cart.clear();
       setDefaultOrderTime();
       renderCart();
-      statusMessage.textContent =
-        "Order submitted. MK'S Kitchen can view it in Netlify Forms, and email alerts will work after notifications are enabled in Netlify.";
+      statusMessage.textContent = "Order sent. Thank you. MK'S Kitchen received your order.";
     } catch {
       orderPreview.focus();
       orderPreview.select();
       statusMessage.textContent =
-        "The website could not submit the order automatically. The order is selected, so please copy it and text it to 571-535-9722.";
+        "The website could not submit the order. The order is selected, so please copy it and text it to 571-535-9722.";
     }
   } finally {
     submitOrder.disabled = false;

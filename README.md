@@ -33,3 +33,5 @@ To send email and SMS automatically, add these environment variables in Netlify:
 The app also submits to Netlify Forms as a backup. In Netlify, open the site and enable email notifications for the `mk-kitchen-orders` form so orders can be emailed even before the SendGrid/Twilio keys are added.
 
 Without those service keys, no website can send a true background text message by itself. Customers can still use the Text backup or Copy order buttons.
+
+Submit order only works on the public Netlify app, not from `http://127.0.0.1:8000`, because Netlify Forms and Netlify Functions run on Netlify.
