@@ -50,13 +50,17 @@ const menuGrid = document.querySelector("#menuGrid");
 const cartItems = document.querySelector("#cartItems");
 const subtotalEl = document.querySelector("#subtotal");
 const totalEl = document.querySelector("#total");
-const emailOrder = document.querySelector("#emailOrder");
+const submitOrder = document.querySelector("#submitOrder");
 const textOrder = document.querySelector("#textOrder");
 const copyOrder = document.querySelector("#copyOrder");
 const orderPreview = document.querySelector("#orderPreview");
 const statusMessage = document.querySelector("#statusMessage");
 const clearOrder = document.querySelector("#clearOrder");
 const orderForm = document.querySelector("#orderForm");
+const orderTypeField = document.querySelector("#orderTypeField");
+const orderItemsField = document.querySelector("#orderItemsField");
+const orderTotalField = document.querySelector("#orderTotalField");
+const orderMessageField = document.querySelector("#orderMessageField");
 
 const money = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -162,6 +166,38 @@ function buildOrderMessage() {
   ].join("\n");
 }
 
+function getOrderItemsText() {
+  return cart.size > 0
+    ? [...cart.values()].map(({ item, quantity }) => `${quantity} x ${item.name}`).join(", ")
+    : "No items selected";
+}
+
+function buildOrderPayload() {
+  return {
+    businessName: business.name,
+    recipientEmail: business.email,
+    recipientPhone: business.phone,
+    orderType,
+    customerName: getFormValue("#customerName"),
+    customerPhone: getFormValue("#customerPhone"),
+    customerEmail: getFormValue("#customerEmail"),
+    orderTime: getFormValue("#orderTime"),
+    customerAddress: getFormValue("#customerAddress"),
+    orderNotes: getFormValue("#orderNotes"),
+    orderItems: getOrderItemsText(),
+    orderTotal: money.format(getSubtotal()),
+    orderMessage: buildOrderMessage(),
+  };
+}
+
+function syncNetlifyFields() {
+  const payload = buildOrderPayload();
+  orderTypeField.value = payload.orderType;
+  orderItemsField.value = payload.orderItems;
+  orderTotalField.value = payload.orderTotal;
+  orderMessageField.value = payload.orderMessage;
+}
+
 function getMissingOrderFields() {
   const missing = [];
 
@@ -182,9 +218,10 @@ function updateMessageLinks() {
   const ready = hasMinimumOrderInfo();
   const missing = getMissingOrderFields();
   orderPreview.value = message;
+  syncNetlifyFields();
 
   statusMessage.textContent = ready
-    ? "Your order message is ready. If email or text does not open, use Copy order."
+    ? "Your order is ready. Tap Submit order to send it to MK'S Kitchen."
     : `Add ${missing.join(", ")} to prepare your order message.`;
 }
 
@@ -193,18 +230,92 @@ function showMissingFields() {
   statusMessage.textContent = `Please add ${missing.join(", ")} first.`;
 }
 
-function sendByEmail() {
+function encodeFormData(data) {
+  return new URLSearchParams(data).toString();
+}
+
+async function submitToNetlifyForms(payload) {
+  const formData = {
+    "form-name": "mk-kitchen-orders",
+    "bot-field": "",
+    customerName: payload.customerName,
+    customerPhone: payload.customerPhone,
+    customerEmail: payload.customerEmail,
+    orderTime: payload.orderTime,
+    customerAddress: payload.customerAddress,
+    orderNotes: payload.orderNotes,
+    orderType: payload.orderType,
+    orderItems: payload.orderItems,
+    orderTotal: payload.orderTotal,
+    orderMessage: payload.orderMessage,
+  };
+
+  const response = await fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: encodeFormData(formData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Netlify form submission failed");
+  }
+}
+
+async function submitToOrderFunction(payload) {
+  const response = await fetch("/.netlify/functions/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("Order notification function is not available");
+  }
+
+  return response.json();
+}
+
+async function submitOrderForm(event) {
+  event.preventDefault();
+
   if (!hasMinimumOrderInfo()) {
     showMissingFields();
     orderPreview.focus();
     return;
   }
 
-  const subject = encodeURIComponent(`New ${orderType} order for ${business.name}`);
-  const body = encodeURIComponent(buildOrderMessage());
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${business.email}&su=${subject}&body=${body}`;
-  window.open(gmailUrl, "_blank", "noopener");
-  statusMessage.textContent = "Opening Gmail with the order. If it does not open, use Copy order and paste it into an email.";
+  syncNetlifyFields();
+  const payload = buildOrderPayload();
+  submitOrder.disabled = true;
+  submitOrder.classList.add("is-disabled");
+  statusMessage.textContent = "Sending your order to MK'S Kitchen...";
+
+  try {
+    await submitToOrderFunction(payload);
+    orderForm.reset();
+    cart.clear();
+    setDefaultOrderTime();
+    renderCart();
+    statusMessage.textContent = "Order sent. Thank you. MK'S Kitchen received your order.";
+  } catch {
+    try {
+      await submitToNetlifyForms(payload);
+      orderForm.reset();
+      cart.clear();
+      setDefaultOrderTime();
+      renderCart();
+      statusMessage.textContent =
+        "Order submitted. MK'S Kitchen can view it in Netlify Forms, and email alerts will work after notifications are enabled in Netlify.";
+    } catch {
+      orderPreview.focus();
+      orderPreview.select();
+      statusMessage.textContent =
+        "The website could not submit the order automatically. The order is selected, so please copy it and text it to 571-535-9722.";
+    }
+  } finally {
+    submitOrder.disabled = false;
+    submitOrder.classList.remove("is-disabled");
+  }
 }
 
 async function sendByText() {
@@ -289,7 +400,7 @@ clearOrder.addEventListener("click", () => {
 });
 
 orderForm.addEventListener("input", updateMessageLinks);
-emailOrder.addEventListener("click", sendByEmail);
+orderForm.addEventListener("submit", submitOrderForm);
 textOrder.addEventListener("click", sendByText);
 copyOrder.addEventListener("click", copyOrderMessage);
 

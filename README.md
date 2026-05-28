@@ -1,27 +1,35 @@
 # MK'S Kitchen Ordering App
 
-A simple static ordering app for MK'S Kitchen. Customers can choose menu items, enter contact details, and send the completed order by email or text message.
+A simple ordering app for MK'S Kitchen. Customers can choose menu items, enter contact details, and submit the completed order.
 
 ## Open the App
 
 Open `index.html` in a browser.
 
-## Set Your Order Destination
+Public app: https://mkskitchen.netlify.app
 
-Edit the `business` section at the top of `app.js`:
+GitHub repository: https://github.com/elilyza/MK-S_KITICHEN
 
-```js
-const business = {
-  name: "MK'S Kitchen",
-  email: "orders@mkskitchen.com",
-  phone: "+15551234567",
-};
+## Notifications
+
+Orders are addressed to:
+
+```text
+sasampong@gmail.com
+571-535-9722
 ```
 
-Replace the email and phone with the address and mobile number where you want orders sent.
+The app includes a Netlify Function at `netlify/functions/send-order.js` for automatic notifications.
+To send email and SMS automatically, add these environment variables in Netlify:
 
-## Important Note
+- `ORDER_EMAIL`
+- `ORDER_SMS_PHONE`
+- `SENDGRID_API_KEY`
+- `SENDGRID_FROM_EMAIL`
+- `TWILIO_ACCOUNT_SID`
+- `TWILIO_AUTH_TOKEN`
+- `TWILIO_FROM_PHONE`
 
-This version uses `mailto:` and `sms:` links, so the customer sends the order from their own email or text app. Some browsers, including in-app preview browsers, may block those links or may not have a mail/text app connected. Customers can use the Copy order button in that case.
+The app also submits to Netlify Forms as a backup. In Netlify, open the site and enable email notifications for the `mk-kitchen-orders` form so orders can be emailed even before the SendGrid/Twilio keys are added.
 
-For automatic server-side delivery without opening the customer's email or messages app, the next step would be adding a small backend service with an email provider or Twilio.
+Without those service keys, no website can send a true background text message by itself. Customers can still use the Text backup or Copy order buttons.

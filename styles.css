@@ -66,10 +66,10 @@ textarea {
 }
 
 .brand-lockup {
-  width: min(560px, 86vw);
-  min-height: 120px;
+  width: min(620px, 92vw);
+  height: clamp(126px, 14vw, 178px);
   margin-bottom: 20px;
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 16px 35px rgba(0, 0, 0, 0.2);
@@ -82,7 +82,6 @@ textarea {
   position: static;
   width: 100%;
   height: 100%;
-  max-height: 190px;
   object-fit: contain;
 }
 
@@ -340,6 +339,10 @@ textarea {
   gap: 12px;
 }
 
+.hidden-field {
+  display: none;
+}
+
 .customer-form label {
   display: grid;
   gap: 6px;
@@ -422,13 +425,9 @@ textarea {
   }
 
   .brand-lockup {
-    width: min(430px, 90vw);
-    min-height: 92px;
+    width: min(520px, 92vw);
+    height: 106px;
     padding: 10px 12px;
-  }
-
-  .brand-lockup img {
-    max-height: 150px;
   }
 
   .menu-panel,
