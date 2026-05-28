@@ -398,6 +398,49 @@ textarea {
   background: #fffaf0;
 }
 
+.success-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(rgba(255, 253, 248, 0.82), rgba(255, 253, 248, 0.92)),
+    url("assets/ghana-local-food-hero.png") center / cover;
+}
+
+.success-panel {
+  width: min(540px, 100%);
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.success-panel img {
+  display: block;
+  width: min(380px, 100%);
+  height: auto;
+  margin-bottom: 22px;
+}
+
+.success-panel h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.success-panel p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.success-panel .send-button {
+  width: fit-content;
+  padding: 0 18px;
+}
+
 @media (max-width: 920px) {
   .order-layout {
     grid-template-columns: 1fr;

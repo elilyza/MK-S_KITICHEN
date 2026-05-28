@@ -234,64 +234,18 @@ function isLocalPreview() {
   return ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
 }
 
-function encodeFormData(data) {
-  return new URLSearchParams(data).toString();
-}
-
-async function submitToNetlifyForms(payload) {
-  const formData = {
-    "form-name": "mk-kitchen-orders",
-    "bot-field": "",
-    customerName: payload.customerName,
-    customerPhone: payload.customerPhone,
-    customerEmail: payload.customerEmail,
-    orderTime: payload.orderTime,
-    customerAddress: payload.customerAddress,
-    orderNotes: payload.orderNotes,
-    orderType: payload.orderType,
-    orderItems: payload.orderItems,
-    orderTotal: payload.orderTotal,
-    orderMessage: payload.orderMessage,
-  };
-
-  const response = await fetch("/", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: encodeFormData(formData),
-  });
-
-  if (!response.ok) {
-    throw new Error("Netlify form submission failed");
-  }
-}
-
-async function submitToOrderFunction(payload) {
-  const response = await fetch("/.netlify/functions/send-order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    throw new Error("Order notification function is not available");
-  }
-
-  return response.json();
-}
-
 async function submitOrderForm(event) {
-  event.preventDefault();
-
   if (!hasMinimumOrderInfo()) {
+    event.preventDefault();
     showMissingFields();
     orderPreview.focus();
     return;
   }
 
   syncNetlifyFields();
-  const payload = buildOrderPayload();
 
   if (isLocalPreview()) {
+    event.preventDefault();
     await copyOrderMessage();
     statusMessage.textContent =
       "Local preview cannot send orders. Open https://mkskitchen.netlify.app to test Submit order, or paste the copied order into a text to 571-535-9722.";
@@ -301,39 +255,6 @@ async function submitOrderForm(event) {
   submitOrder.disabled = true;
   submitOrder.classList.add("is-disabled");
   statusMessage.textContent = "Sending your order to MK'S Kitchen...";
-
-  try {
-    await submitToNetlifyForms(payload);
-
-    try {
-      await submitToOrderFunction(payload);
-    } catch {
-      // Netlify Forms captured the order; SMS/email provider keys may not be configured yet.
-    }
-
-    orderForm.reset();
-    cart.clear();
-    setDefaultOrderTime();
-    renderCart();
-    statusMessage.textContent = "Order submitted. Thank you. MK'S Kitchen received your order.";
-  } catch {
-    try {
-      await submitToOrderFunction(payload);
-      orderForm.reset();
-      cart.clear();
-      setDefaultOrderTime();
-      renderCart();
-      statusMessage.textContent = "Order sent. Thank you. MK'S Kitchen received your order.";
-    } catch {
-      orderPreview.focus();
-      orderPreview.select();
-      statusMessage.textContent =
-        "The website could not submit the order. The order is selected, so please copy it and text it to 571-535-9722.";
-    }
-  } finally {
-    submitOrder.disabled = false;
-    submitOrder.classList.remove("is-disabled");
-  }
 }
 
 async function sendByText() {

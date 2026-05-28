@@ -69,7 +69,15 @@
             </div>
           </dl>
 
-          <form class="customer-form" id="orderForm" name="mk-kitchen-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <form
+            class="customer-form"
+            id="orderForm"
+            name="mk-kitchen-orders"
+            method="POST"
+            action="/success.html"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
             <input type="hidden" name="form-name" value="mk-kitchen-orders" />
             <p class="hidden-field">
               <label>Do not fill this out <input name="bot-field" /></label>
