@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MK'S Kitchen Orders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-label="MK'S Kitchen ordering">
+        <img src="assets/ghana-local-food-hero.png" alt="Ghanaian local food spread with waakye, jollof, fried yam, and fried rice" />
+        <div class="hero__shade"></div>
+        <div class="hero__content">
+          <div class="brand-lockup" aria-label="MK'S Kitchen - The Real Taste of Ghana">
+            <img src="assets/mk-kitchen-logo.jpg" alt="" />
+          </div>
+          <p class="eyebrow">Fresh orders and catering</p>
+          <h1>The Real Taste of Ghana</h1>
+          <p class="hero__copy">Choose your plates, add catering notes, and send your order in a few taps.</p>
+        </div>
+      </section>
+
+      <section class="order-layout" aria-label="Food order form">
+        <div class="menu-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Menu</p>
+              <h2>Today's favorites</h2>
+            </div>
+            <div class="order-type" role="group" aria-label="Order type">
+              <button class="segmented is-active" type="button" data-order-type="Pickup">Pickup</button>
+              <button class="segmented" type="button" data-order-type="Delivery">Delivery</button>
+              <button class="segmented" type="button" data-order-type="Catering">Catering</button>
+            </div>
+          </div>
+          <div class="menu-grid" id="menuGrid"></div>
+        </div>
+
+        <aside class="cart-panel" aria-label="Order summary">
+          <div class="section-heading section-heading--compact">
+            <div>
+              <p class="eyebrow">Order</p>
+              <h2>Summary</h2>
+            </div>
+            <button class="icon-button" type="button" id="clearOrder" aria-label="Clear order" title="Clear order">
+              <span aria-hidden="true">x</span>
+            </button>
+          </div>
+
+          <div class="cart-items" id="cartItems">
+            <p class="empty-state">No items selected yet.</p>
+          </div>
+
+          <dl class="totals">
+            <div>
+              <dt>Subtotal</dt>
+              <dd id="subtotal">$0.00</dd>
+            </div>
+            <div>
+              <dt>Estimated total</dt>
+              <dd id="total">$0.00</dd>
+            </div>
+          </dl>
+
+          <form class="customer-form" id="orderForm">
+            <label>
+              Name
+              <input id="customerName" name="customerName" autocomplete="name" required />
+            </label>
+            <label>
+              Phone
+              <input id="customerPhone" name="customerPhone" autocomplete="tel" required />
+            </label>
+            <label>
+              Email
+              <input id="customerEmail" name="customerEmail" type="email" autocomplete="email" />
+            </label>
+            <label>
+              Date and time
+              <input id="orderTime" name="orderTime" type="datetime-local" required />
+            </label>
+            <label>
+              Address
+              <input id="customerAddress" name="customerAddress" autocomplete="street-address" />
+            </label>
+            <label>
+              Notes
+              <textarea id="orderNotes" name="orderNotes" rows="4" placeholder="Spice level, allergies, serving needs"></textarea>
+            </label>
+            <label>
+              Order message
+              <textarea id="orderPreview" name="orderPreview" rows="8" readonly></textarea>
+            </label>
+
+            <div class="send-actions">
+              <button class="send-button send-button--primary" id="emailOrder" type="button">
+                Email order
+              </button>
+              <button class="send-button" id="textOrder" type="button">Text order</button>
+              <button class="send-button send-button--copy" id="copyOrder" type="button">Copy order</button>
+            </div>
+            <p class="fine-print" id="statusMessage" role="status">Add at least one item to prepare your order message.</p>
+          </form>
+        </aside>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
