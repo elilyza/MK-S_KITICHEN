@@ -15,14 +15,14 @@ GitHub repository: https://github.com/elilyza/MK-S_KITICHEN
 Orders are addressed to:
 
 ```text
-sasampong@gmail.com
-571-535-9722
+sbonsu03@gmail.com
+571-733-1957
 ```
 
 The customer-facing order buttons use direct email and text links:
 
-- Email order opens a message to `sasampong@gmail.com`
-- Text order opens a text to `571-535-9722`
+- Email order opens a message to `sbonsu03@gmail.com`
+- Text order opens a text to `571-733-1957`
 - Copy order copies the full order message as a fallback
 
 The app also includes a Netlify Function at `netlify/functions/send-order.js` for future automatic notifications.

@@ -10,7 +10,7 @@ function cleanPhoneNumber(phone) {
 
 async function sendEmailWithSendGrid(payload) {
   const apiKey = process.env.SENDGRID_API_KEY;
-  const toEmail = process.env.ORDER_EMAIL || "sasampong@gmail.com";
+  const toEmail = process.env.ORDER_EMAIL || "sbonsu03@gmail.com";
   const fromEmail = process.env.SENDGRID_FROM_EMAIL;
 
   if (!apiKey || !fromEmail) {
@@ -43,7 +43,7 @@ async function sendSmsWithTwilio(payload) {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const fromPhone = process.env.TWILIO_FROM_PHONE;
-  const toPhone = cleanPhoneNumber(process.env.ORDER_SMS_PHONE || "+15715359722");
+  const toPhone = cleanPhoneNumber(process.env.ORDER_SMS_PHONE || "+15717331957");
 
   if (!accountSid || !authToken || !fromPhone) {
     return { skipped: true, reason: "Twilio is not configured" };

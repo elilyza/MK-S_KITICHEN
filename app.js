@@ -1,7 +1,7 @@
 const business = {
   name: "MK'S Kitchen",
-  email: "sasampong@gmail.com",
-  phone: "+15715359722",
+  email: "sbonsu03@gmail.com",
+  phone: "+15717331957",
 };
 
 const menuItems = [
@@ -214,7 +214,7 @@ function guardSendAction(event) {
 function sendByEmail(event) {
   guardSendAction(event);
   if (!event.defaultPrevented) {
-    statusMessage.textContent = "Opening your email app with the order addressed to sasampong@gmail.com.";
+    statusMessage.textContent = "Opening your email app with the order addressed to sbonsu03@gmail.com.";
   }
 }
 
@@ -226,7 +226,7 @@ function sendByText(event) {
     return;
   }
 
-  statusMessage.textContent = "Opening your text app with the order addressed to 571-535-9722.";
+  statusMessage.textContent = "Opening your text app with the order addressed to 571-733-1957.";
 }
 
 function copyTextFallback(text) {
