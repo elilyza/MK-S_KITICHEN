@@ -1,6 +1,6 @@
 # MK'S Kitchen Ordering App
 
-A simple ordering app for MK'S Kitchen. Customers can choose menu items, enter contact details, and submit the completed order.
+A simple ordering app for MK'S Kitchen. Customers can choose menu items, enter contact details, and send the completed order by email, text, or copy/paste.
 
 ## Open the App
 
@@ -19,8 +19,14 @@ sasampong@gmail.com
 571-535-9722
 ```
 
-The app includes a Netlify Function at `netlify/functions/send-order.js` for automatic notifications.
-To send email and SMS automatically, add these environment variables in Netlify:
+The customer-facing order buttons use direct email and text links:
+
+- Email order opens a message to `sasampong@gmail.com`
+- Text order opens a text to `571-535-9722`
+- Copy order copies the full order message as a fallback
+
+The app also includes a Netlify Function at `netlify/functions/send-order.js` for future automatic notifications.
+To send email and SMS automatically in the background, add these environment variables in Netlify:
 
 - `ORDER_EMAIL`
 - `ORDER_SMS_PHONE`
@@ -30,8 +36,4 @@ To send email and SMS automatically, add these environment variables in Netlify:
 - `TWILIO_AUTH_TOKEN`
 - `TWILIO_FROM_PHONE`
 
-The app also submits to Netlify Forms as a backup. In Netlify, open the site and enable email notifications for the `mk-kitchen-orders` form so orders can be emailed even before the SendGrid/Twilio keys are added.
-
-Without those service keys, no website can send a true background text message by itself. Customers can still use the Text backup or Copy order buttons.
-
-Submit order only works on the public Netlify app, not from `http://127.0.0.1:8000`, because Netlify Forms and Netlify Functions run on Netlify. The form uses Netlify's built-in success page after submission.
+Without those service keys, no website can send a true background text message by itself. Customers can still use the Email order, Text order, or Copy order buttons.

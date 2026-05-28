@@ -50,17 +50,13 @@ const menuGrid = document.querySelector("#menuGrid");
 const cartItems = document.querySelector("#cartItems");
 const subtotalEl = document.querySelector("#subtotal");
 const totalEl = document.querySelector("#total");
-const submitOrder = document.querySelector("#submitOrder");
+const emailOrder = document.querySelector("#emailOrder");
 const textOrder = document.querySelector("#textOrder");
 const copyOrder = document.querySelector("#copyOrder");
 const orderPreview = document.querySelector("#orderPreview");
 const statusMessage = document.querySelector("#statusMessage");
 const clearOrder = document.querySelector("#clearOrder");
 const orderForm = document.querySelector("#orderForm");
-const orderTypeField = document.querySelector("#orderTypeField");
-const orderItemsField = document.querySelector("#orderItemsField");
-const orderTotalField = document.querySelector("#orderTotalField");
-const orderMessageField = document.querySelector("#orderMessageField");
 
 const money = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -166,38 +162,6 @@ function buildOrderMessage() {
   ].join("\n");
 }
 
-function getOrderItemsText() {
-  return cart.size > 0
-    ? [...cart.values()].map(({ item, quantity }) => `${quantity} x ${item.name}`).join(", ")
-    : "No items selected";
-}
-
-function buildOrderPayload() {
-  return {
-    businessName: business.name,
-    recipientEmail: business.email,
-    recipientPhone: business.phone,
-    orderType,
-    customerName: getFormValue("#customerName"),
-    customerPhone: getFormValue("#customerPhone"),
-    customerEmail: getFormValue("#customerEmail"),
-    orderTime: getFormValue("#orderTime"),
-    customerAddress: getFormValue("#customerAddress"),
-    orderNotes: getFormValue("#orderNotes"),
-    orderItems: getOrderItemsText(),
-    orderTotal: money.format(getSubtotal()),
-    orderMessage: buildOrderMessage(),
-  };
-}
-
-function syncNetlifyFields() {
-  const payload = buildOrderPayload();
-  orderTypeField.value = payload.orderType;
-  orderItemsField.value = payload.orderItems;
-  orderTotalField.value = payload.orderTotal;
-  orderMessageField.value = payload.orderMessage;
-}
-
 function getMissingOrderFields() {
   const missing = [];
 
@@ -217,11 +181,20 @@ function updateMessageLinks() {
   const message = buildOrderMessage();
   const ready = hasMinimumOrderInfo();
   const missing = getMissingOrderFields();
+  const subject = encodeURIComponent(`New ${orderType} order for ${business.name}`);
+  const body = encodeURIComponent(message);
+  const smsSeparator = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
+
   orderPreview.value = message;
-  syncNetlifyFields();
+  emailOrder.href = `mailto:${business.email}?subject=${subject}&body=${body}`;
+  textOrder.href = `sms:${business.phone}${smsSeparator}body=${body}`;
+  emailOrder.classList.toggle("is-disabled", !ready);
+  textOrder.classList.toggle("is-disabled", !ready);
+  emailOrder.setAttribute("aria-disabled", String(!ready));
+  textOrder.setAttribute("aria-disabled", String(!ready));
 
   statusMessage.textContent = ready
-    ? "Your order is ready. Tap Submit order to send it to MK'S Kitchen."
+    ? "Your order is ready. Tap Email order or Text order to send it to MK'S Kitchen."
     : `Add ${missing.join(", ")} to prepare your order message.`;
 }
 
@@ -230,11 +203,22 @@ function showMissingFields() {
   statusMessage.textContent = `Please add ${missing.join(", ")} first.`;
 }
 
-function isLocalPreview() {
-  return ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+function guardSendAction(event) {
+  if (!hasMinimumOrderInfo()) {
+    event.preventDefault();
+    showMissingFields();
+    orderPreview.focus();
+  }
 }
 
-async function submitOrderForm(event) {
+function sendByEmail(event) {
+  guardSendAction(event);
+  if (!event.defaultPrevented) {
+    statusMessage.textContent = "Opening your email app with the order addressed to sasampong@gmail.com.";
+  }
+}
+
+function sendByText(event) {
   if (!hasMinimumOrderInfo()) {
     event.preventDefault();
     showMissingFields();
@@ -242,35 +226,7 @@ async function submitOrderForm(event) {
     return;
   }
 
-  syncNetlifyFields();
-
-  if (isLocalPreview()) {
-    event.preventDefault();
-    await copyOrderMessage();
-    statusMessage.textContent =
-      "Local preview cannot send orders. Open https://mkskitchen.netlify.app to test Submit order, or paste the copied order into a text to 571-535-9722.";
-    return;
-  }
-
-  submitOrder.disabled = true;
-  submitOrder.classList.add("is-disabled");
-  statusMessage.textContent = "Sending your order to MK'S Kitchen...";
-}
-
-async function sendByText() {
-  if (!hasMinimumOrderInfo()) {
-    showMissingFields();
-    orderPreview.focus();
-    return;
-  }
-
-  const message = buildOrderMessage();
-  await copyOrderMessage();
-
-  const body = encodeURIComponent(message);
-  const smsSeparator = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
-  window.location.href = `sms:${business.phone}${smsSeparator}body=${body}`;
-  statusMessage.textContent = "Order copied. If your text app did not open, paste it into a text to 571-535-9722.";
+  statusMessage.textContent = "Opening your text app with the order addressed to 571-535-9722.";
 }
 
 function copyTextFallback(text) {
@@ -339,7 +295,8 @@ clearOrder.addEventListener("click", () => {
 });
 
 orderForm.addEventListener("input", updateMessageLinks);
-orderForm.addEventListener("submit", submitOrderForm);
+orderForm.addEventListener("submit", (event) => event.preventDefault());
+emailOrder.addEventListener("click", sendByEmail);
 textOrder.addEventListener("click", sendByText);
 copyOrder.addEventListener("click", copyOrderMessage);
 

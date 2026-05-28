@@ -69,22 +69,7 @@
             </div>
           </dl>
 
-          <form
-            class="customer-form"
-            id="orderForm"
-            name="mk-kitchen-orders"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-          >
-            <input type="hidden" name="form-name" value="mk-kitchen-orders" />
-            <p class="hidden-field">
-              <label>Do not fill this out <input name="bot-field" /></label>
-            </p>
-            <input type="hidden" id="orderTypeField" name="orderType" value="Pickup" />
-            <input type="hidden" id="orderItemsField" name="orderItems" />
-            <input type="hidden" id="orderTotalField" name="orderTotal" />
-            <input type="hidden" id="orderMessageField" name="orderMessage" />
+          <form class="customer-form" id="orderForm">
             <label>
               Name
               <input id="customerName" name="customerName" autocomplete="name" required />
@@ -115,8 +100,8 @@
             </label>
 
             <div class="send-actions">
-              <button class="send-button send-button--primary" id="submitOrder" type="submit">Submit order</button>
-              <button class="send-button" id="textOrder" type="button">Text backup</button>
+              <a class="send-button send-button--primary" id="emailOrder" href="mailto:sasampong@gmail.com">Email order</a>
+              <a class="send-button" id="textOrder" href="sms:+15715359722">Text order</a>
               <button class="send-button send-button--copy" id="copyOrder" type="button">Copy order</button>
             </div>
             <p class="fine-print" id="statusMessage" role="status">Add at least one item to prepare your order message.</p>
