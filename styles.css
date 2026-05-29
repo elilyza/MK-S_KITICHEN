@@ -39,15 +39,21 @@ textarea {
 
 .hero {
   position: relative;
-  min-height: clamp(520px, 76vh, 760px);
+  min-height: clamp(440px, 58vh, 620px);
   display: grid;
   align-items: end;
   overflow: hidden;
+  background: #111111;
 }
 
-.hero img {
+.hero-gallery {
   position: absolute;
   inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.hero-gallery img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -65,27 +71,20 @@ textarea {
   position: relative;
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 72px 0 110px;
+  padding: 58px 0 92px;
   color: #ffffff;
 }
 
-.brand-lockup {
-  width: min(500px, 88vw);
-  height: clamp(108px, 12vw, 150px);
+.hero-logo {
+  display: block;
+  width: min(360px, 82vw);
+  height: auto;
+  max-height: 110px;
   margin-bottom: 20px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 16px 35px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-}
-
-.brand-lockup img {
-  display: block;
-  position: static;
-  width: 100%;
-  height: 100%;
   object-fit: contain;
 }
 
@@ -270,34 +269,25 @@ textarea {
 
 .menu-category__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 8px;
 }
 
 .menu-item {
   display: grid;
-  grid-template-rows: 170px 1fr;
-  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
 }
 
-.menu-item__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.menu-item__body {
-  display: grid;
-  gap: 12px;
-  padding: 15px;
-}
-
 .menu-item__top {
-  display: flex;
-  justify-content: space-between;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(18px, 1fr) auto;
+  align-items: end;
   gap: 12px;
 }
 
@@ -307,10 +297,11 @@ textarea {
   line-height: 1.2;
 }
 
-.menu-item p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.42;
+.menu-dots {
+  height: 1px;
+  min-width: 18px;
+  margin-bottom: 5px;
+  border-bottom: 2px dotted #c6a271;
 }
 
 .price {
@@ -335,8 +326,8 @@ textarea {
 }
 
 .add-button {
-  align-self: end;
-  width: 100%;
+  width: 72px;
+  min-height: 38px;
   background: var(--ink);
 }
 
@@ -517,8 +508,9 @@ textarea {
 }
 
 .payment-panel img {
-  width: 100%;
-  max-height: 220px;
+  width: min(190px, 100%);
+  justify-self: center;
+  max-height: none;
   object-fit: contain;
   border-radius: 8px;
   background: #ffffff;
@@ -618,7 +610,11 @@ textarea {
 
 @media (max-width: 640px) {
   .hero {
-    min-height: 600px;
+    min-height: 560px;
+  }
+
+  .hero-gallery {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .hero__shade {
@@ -631,10 +627,9 @@ textarea {
     padding-bottom: 94px;
   }
 
-  .brand-lockup {
-    width: min(430px, 92vw);
-    height: 98px;
-    padding: 10px 12px;
+  .hero-logo {
+    width: min(330px, 92vw);
+    max-height: 96px;
   }
 
   .intro-band {
@@ -673,7 +668,7 @@ textarea {
   }
 
   .menu-item {
-    grid-template-rows: 210px 1fr;
+    grid-template-columns: 1fr;
   }
 
   .food-gallery {

@@ -9,97 +9,73 @@ const menuItems = [
     id: "jollof-plain",
     category: "Rice dishes",
     name: "Jollof (Plain)",
-    description: "Ghana-style jollof rice prepared with MK'S Kitchen seasoning.",
     price: 130,
-    image: "assets/mk-menu/food-jollof.jpg",
   },
   {
     id: "goat-jollof",
     category: "Rice dishes",
     name: "Goat Jollof",
-    description: "Jollof rice served with rich goat meat.",
     price: 200,
-    image: "assets/mk-menu/food-jollof.jpg",
   },
   {
     id: "fried-rice",
     category: "Rice dishes",
     name: "Fried Rice",
-    description: "Seasoned fried rice with vegetables and MK'S Kitchen flavor.",
     price: 220,
-    image: "assets/mk-menu/food-fried-rice.jpg",
   },
   {
     id: "waakye",
     category: "Rice dishes",
     name: "Waakye",
-    description: "Rice and beans with classic Ghanaian sides and sauce.",
     price: 380,
-    image: "assets/mk-menu/food-waakye.jpg",
   },
   {
     id: "fried-turkey",
     category: "Fried favorites",
     name: "Fried Turkey",
-    description: "Crispy fried turkey, seasoned and cooked fresh.",
     price: 160,
-    image: "assets/mk-menu/food-fried-yam.jpg",
   },
   {
     id: "spring-roll",
     category: "Fried favorites",
     name: "Spring Roll (1 pc)",
-    description: "One crisp spring roll, perfect as an add-on.",
     price: 1.5,
-    image: "assets/mk-menu/food-pastry.jpg",
   },
   {
     id: "fried-chicken",
     category: "Fried favorites",
     name: "Fried Chicken",
-    description: "Seasoned fried chicken made fresh for your order.",
     price: 160,
-    image: "assets/mk-menu/food-jollof.jpg",
   },
   {
     id: "palm-nut-soup",
     category: "Traditional soups",
     name: "Palm Nut Soup",
-    description: "Traditional palm nut soup with deep Ghanaian flavor.",
     price: 150,
-    image: "assets/mk-menu/food-kokonte.jpg",
   },
   {
     id: "peanut-butter-soup",
     category: "Traditional soups",
     name: "Peanut Butter Soup",
-    description: "Creamy peanut butter soup prepared Ghana style.",
     price: 150,
-    image: "assets/mk-menu/food-kokonte.jpg",
   },
   {
     id: "okra-soup-stew",
     category: "Traditional soups",
     name: "Okra Soup / Stew",
-    description: "Rich okra soup or stew. Add preferences in notes.",
     price: 240,
-    image: "assets/mk-menu/food-plate-fish.jpg",
   },
   {
     id: "light-soup",
     category: "Traditional soups",
     name: "Light Soup",
-    description: "Comforting Ghanaian light soup, fresh and flavorful.",
     price: 120,
-    image: "assets/mk-menu/food-kokonte.jpg",
   },
   {
     id: "salad",
     category: "Sides",
     name: "Salad",
-    description: "Fresh salad side for plates and catering orders.",
     price: 100,
-    image: "assets/mk-menu/food-plain-rice.jpg",
   },
 ];
 
@@ -135,15 +111,12 @@ function renderMenu() {
         .map(
           (item) => `
             <article class="menu-item">
-              <img class="menu-item__image" src="${item.image}" alt="${item.name}" />
-              <div class="menu-item__body">
-                <div class="menu-item__top">
-                  <h3>${item.name}</h3>
-                  <span class="price">${money.format(item.price)}</span>
-                </div>
-                <p>${item.description}</p>
-                <button class="add-button" type="button" data-add="${item.id}">Add to order</button>
+              <div class="menu-item__top">
+                <h3>${item.name}</h3>
+                <span class="menu-dots" aria-hidden="true"></span>
+                <span class="price">${money.format(item.price)}</span>
               </div>
+              <button class="add-button" type="button" data-add="${item.id}">Add</button>
             </article>
           `,
         )
