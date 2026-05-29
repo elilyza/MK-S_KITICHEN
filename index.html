@@ -15,24 +15,46 @@
   <body>
     <main class="app-shell">
       <section class="hero" aria-label="MK'S Kitchen ordering">
-        <img src="assets/ghana-local-food-hero.png" alt="Ghanaian local food spread with waakye, jollof, fried yam, and fried rice" />
+        <img src="assets/mk-menu/menu-banner.jpg" alt="MK'S Kitchen Ghana menu banner" />
         <div class="hero__shade"></div>
         <div class="hero__content">
-          <div class="brand-lockup" aria-label="MK'S Kitchen - The Real Taste of Ghana">
+          <div class="brand-lockup">
             <img src="assets/mk-kitchen-logo.jpg" alt="" />
           </div>
-          <p class="eyebrow">Fresh orders and catering</p>
+          <p class="eyebrow">Fresh Ghanaian food and catering</p>
           <h1>The Real Taste of Ghana</h1>
-          <p class="hero__copy">Choose your plates, add catering notes, and send your order in a few taps.</p>
+          <p class="hero__copy">Choose from the official MK'S Kitchen menu, add pickup or catering notes, and send your order by text or email.</p>
+          <div class="hero-actions" aria-label="Quick actions">
+            <a href="#order" class="hero-button hero-button--primary">Start order</a>
+            <a href="#gallery" class="hero-button">View food</a>
+          </div>
         </div>
       </section>
 
-      <section class="order-layout" aria-label="Food order form">
+      <section class="intro-band" aria-label="Ordering and payment information">
+        <div>
+          <p class="eyebrow">Order line</p>
+          <strong>571-733-1957</strong>
+          <span>Call or text MK'S Kitchen</span>
+        </div>
+        <div>
+          <p class="eyebrow">Payment</p>
+          <strong>CashApp / Zelle</strong>
+          <span>571-733-1957</span>
+        </div>
+        <div>
+          <p class="eyebrow">Email</p>
+          <strong>sbonsu03@gmail.com</strong>
+          <span>Send order details anytime</span>
+        </div>
+      </section>
+
+      <section class="order-layout" id="order" aria-label="Food order form">
         <div class="menu-panel">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Menu</p>
-              <h2>Today's favorites</h2>
+              <p class="eyebrow">Official menu</p>
+              <h2>Choose your dishes</h2>
             </div>
             <div class="order-type" role="group" aria-label="Order type">
               <button class="segmented is-active" type="button" data-order-type="Pickup">Pickup</button>
@@ -68,6 +90,19 @@
               <dd id="total">$0.00</dd>
             </div>
           </dl>
+
+          <section class="payment-panel" aria-label="Payment details">
+            <p class="eyebrow">Payment options</p>
+            <div>
+              <strong>CashApp</strong>
+              <span>571-733-1957</span>
+            </div>
+            <div>
+              <strong>Zelle</strong>
+              <span>571-733-1957</span>
+            </div>
+            <img src="assets/mk-menu/cashapp.png" alt="CashApp payment QR code for Stephanie Bonsu" />
+          </section>
 
           <form class="customer-form" id="orderForm">
             <label>
@@ -107,6 +142,23 @@
             <p class="fine-print" id="statusMessage" role="status">Add at least one item to prepare your order message.</p>
           </form>
         </aside>
+      </section>
+
+      <section class="gallery-section" id="gallery" aria-label="MK'S Kitchen food photos">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Real MK'S Kitchen food</p>
+            <h2>Fresh from our kitchen</h2>
+          </div>
+        </div>
+        <div class="food-gallery">
+          <img src="assets/mk-menu/food-jollof.jpg" alt="Jollof rice with chicken and salad" />
+          <img src="assets/mk-menu/food-waakye.jpg" alt="Waakye plate with egg, rice, beans, spaghetti, salad, and stew" />
+          <img src="assets/mk-menu/food-fried-yam.jpg" alt="Fried yam with fried pieces and green pepper sauce" />
+          <img src="assets/mk-menu/food-fried-rice.jpg" alt="Fried rice with shrimp and fried chicken" />
+          <img src="assets/mk-menu/food-rice-fish.jpg" alt="Rice and fried fish with avocado and onions" />
+          <img src="assets/mk-menu/food-coconut-balls.jpg" alt="Golden coconut snack balls" />
+        </div>
       </section>
     </main>
 

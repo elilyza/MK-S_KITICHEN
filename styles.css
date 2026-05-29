@@ -8,7 +8,9 @@
   --accent: #bb2f26;
   --accent-dark: #8f211b;
   --leaf: #3d6b42;
+  --leaf-dark: #194326;
   --gold: #d39b35;
+  --sun: #f6c04d;
   --shadow: 0 18px 45px rgba(37, 30, 20, 0.13);
 }
 
@@ -18,7 +20,9 @@
 
 body {
   margin: 0;
-  background: var(--paper);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(255, 247, 231, 0.96)),
+    var(--paper);
   color: var(--ink);
   font-family: Inter, Arial, sans-serif;
 }
@@ -35,7 +39,7 @@ textarea {
 
 .hero {
   position: relative;
-  min-height: clamp(320px, 44vh, 520px);
+  min-height: clamp(520px, 76vh, 760px);
   display: grid;
   align-items: end;
   overflow: hidden;
@@ -53,21 +57,21 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(11, 9, 5, 0.72), rgba(11, 9, 5, 0.28) 48%, rgba(11, 9, 5, 0.06)),
-    linear-gradient(0deg, rgba(255, 253, 248, 1), rgba(255, 253, 248, 0) 30%);
+    linear-gradient(90deg, rgba(17, 12, 5, 0.78), rgba(17, 12, 5, 0.36) 48%, rgba(17, 12, 5, 0.08)),
+    linear-gradient(0deg, rgba(255, 253, 248, 1), rgba(255, 253, 248, 0) 26%);
 }
 
 .hero__content {
   position: relative;
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 72px 0 86px;
+  padding: 72px 0 110px;
   color: #ffffff;
 }
 
 .brand-lockup {
-  width: min(620px, 92vw);
-  height: clamp(126px, 14vw, 178px);
+  width: min(500px, 88vw);
+  height: clamp(108px, 12vw, 150px);
   margin-bottom: 20px;
   padding: 12px 16px;
   border-radius: 8px;
@@ -96,8 +100,8 @@ textarea {
 
 .hero h1 {
   margin: 0;
-  max-width: 780px;
-  font-size: clamp(2.2rem, 5.8vw, 5.1rem);
+  max-width: 860px;
+  font-size: clamp(2.7rem, 6.6vw, 6.2rem);
   line-height: 0.98;
   letter-spacing: 0;
 }
@@ -109,9 +113,69 @@ textarea {
   line-height: 1.45;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.hero-button {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.hero-button--primary {
+  border-color: var(--sun);
+  background: var(--sun);
+  color: #1d1506;
+}
+
+.intro-band {
+  width: min(1180px, calc(100% - 32px));
+  margin: -54px auto 22px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.intro-band > div {
+  min-height: 116px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 8px;
+  background: var(--leaf-dark);
+  color: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.intro-band strong,
+.intro-band span {
+  display: block;
+}
+
+.intro-band strong {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.intro-band span {
+  margin-top: 5px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
 .order-layout {
   width: min(1180px, calc(100% - 32px));
-  margin: -46px auto 56px;
+  margin: 0 auto 56px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 390px;
   gap: 18px;
@@ -185,18 +249,50 @@ textarea {
 
 .menu-grid {
   display: grid;
+  gap: 22px;
+}
+
+.menu-category {
+  display: grid;
+  gap: 12px;
+}
+
+.menu-category > h3 {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 6px solid var(--gold);
+  border-radius: 8px;
+  background: #fff6dd;
+  color: var(--leaf-dark);
+  font-size: 1.12rem;
+  text-transform: uppercase;
+}
+
+.menu-category__grid {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
 .menu-item {
   display: grid;
-  gap: 12px;
-  min-height: 198px;
-  padding: 16px;
+  grid-template-rows: 170px 1fr;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
+}
+
+.menu-item__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-item__body {
+  display: grid;
+  gap: 12px;
+  padding: 15px;
 }
 
 .menu-item__top {
@@ -241,6 +337,7 @@ textarea {
 .add-button {
   align-self: end;
   width: 100%;
+  background: var(--ink);
 }
 
 .add-button:hover,
@@ -398,6 +495,59 @@ textarea {
   background: #fffaf0;
 }
 
+.payment-panel {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 14px;
+  border: 1px solid rgba(61, 107, 66, 0.24);
+  border-radius: 8px;
+  background: #f7fff3;
+}
+
+.payment-panel div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--leaf-dark);
+}
+
+.payment-panel span {
+  font-weight: 800;
+}
+
+.payment-panel img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.gallery-section {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto 64px;
+}
+
+.food-gallery {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.food-gallery img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(37, 30, 20, 0.12);
+}
+
+.food-gallery img:nth-child(1),
+.food-gallery img:nth-child(4) {
+  grid-column: span 2;
+}
+
 .success-page {
   min-height: 100vh;
   display: grid;
@@ -442,19 +592,33 @@ textarea {
 }
 
 @media (max-width: 920px) {
+  .intro-band {
+    grid-template-columns: 1fr;
+    margin-top: -42px;
+  }
+
   .order-layout {
     grid-template-columns: 1fr;
-    margin-top: -34px;
   }
 
   .cart-panel {
     position: static;
   }
+
+  .food-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-gallery img,
+  .food-gallery img:nth-child(1),
+  .food-gallery img:nth-child(4) {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 640px) {
   .hero {
-    min-height: 430px;
+    min-height: 600px;
   }
 
   .hero__shade {
@@ -464,13 +628,22 @@ textarea {
   }
 
   .hero__content {
-    padding-bottom: 68px;
+    padding-bottom: 94px;
   }
 
   .brand-lockup {
-    width: min(520px, 92vw);
-    height: 106px;
+    width: min(430px, 92vw);
+    height: 98px;
     padding: 10px 12px;
+  }
+
+  .intro-band {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .order-layout,
+  .gallery-section {
+    width: min(100% - 24px, 1180px);
   }
 
   .menu-panel,
@@ -494,7 +667,16 @@ textarea {
   }
 
   .menu-grid,
+  .menu-category__grid,
   .send-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-item {
+    grid-template-rows: 210px 1fr;
+  }
+
+  .food-gallery {
     grid-template-columns: 1fr;
   }
 }

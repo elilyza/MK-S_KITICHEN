@@ -1,6 +1,6 @@
 # MK'S Kitchen Ordering App
 
-A simple ordering app for MK'S Kitchen. Customers can choose menu items, enter contact details, and send the completed order by email, text, or copy/paste.
+A polished ordering app for MK'S Kitchen. Customers can choose from the official menu, enter contact details, see payment options, and send the completed order by email, text, or copy/paste.
 
 ## Open the App
 
@@ -17,6 +17,13 @@ Orders are addressed to:
 ```text
 sbonsu03@gmail.com
 571-733-1957
+```
+
+Payment details shown in the app:
+
+```text
+CashApp: 571-733-1957
+Zelle: 571-733-1957
 ```
 
 The customer-facing order buttons use direct email and text links:
