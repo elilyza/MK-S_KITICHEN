@@ -93,6 +93,12 @@ const orderPreview = document.querySelector("#orderPreview");
 const statusMessage = document.querySelector("#statusMessage");
 const clearOrder = document.querySelector("#clearOrder");
 const orderForm = document.querySelector("#orderForm");
+const mobileOrderBar = document.querySelector("#mobileOrderBar");
+const mobileCartCount = document.querySelector("#mobileCartCount");
+const mobileCartTotal = document.querySelector("#mobileCartTotal");
+const viewOrderButton = document.querySelector("#viewOrderButton");
+const cartToast = document.querySelector("#cartToast");
+let toastTimer;
 
 const money = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -136,6 +142,43 @@ function getSubtotal() {
   return [...cart.values()].reduce((sum, line) => sum + line.item.price * line.quantity, 0);
 }
 
+function getCartItemCount() {
+  return [...cart.values()].reduce((sum, line) => sum + line.quantity, 0);
+}
+
+function updateMobileOrderBar() {
+  const itemCount = getCartItemCount();
+  mobileCartCount.textContent = itemCount === 1 ? "1 item" : `${itemCount} items`;
+  mobileCartTotal.textContent = money.format(getSubtotal());
+  mobileOrderBar.hidden = itemCount === 0;
+  mobileOrderBar.classList.toggle("is-visible", itemCount > 0);
+}
+
+function showAddedFeedback(item, button) {
+  if (!item) return;
+
+  if (button) {
+    const originalText = button.textContent;
+    button.textContent = "Added";
+    button.classList.add("is-added");
+    window.setTimeout(() => {
+      button.textContent = originalText;
+      button.classList.remove("is-added");
+    }, 900);
+  }
+
+  cartToast.textContent = `${item.name} added to order`;
+  cartToast.classList.add("is-visible");
+  mobileOrderBar.classList.remove("pulse");
+  void mobileOrderBar.offsetWidth;
+  mobileOrderBar.classList.add("pulse");
+
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    cartToast.classList.remove("is-visible");
+  }, 1800);
+}
+
 function renderCart() {
   if (cart.size === 0) {
     cartItems.innerHTML = '<p class="empty-state">No items selected yet.</p>';
@@ -163,6 +206,7 @@ function renderCart() {
   subtotalEl.textContent = money.format(subtotal);
   totalEl.textContent = money.format(subtotal);
   updateMessageLinks();
+  updateMobileOrderBar();
 }
 
 function changeQuantity(itemId, amount) {
@@ -179,6 +223,7 @@ function changeQuantity(itemId, amount) {
   }
 
   renderCart();
+  return item;
 }
 
 function getFormValue(selector) {
@@ -332,7 +377,10 @@ document.addEventListener("click", (event) => {
   const decreaseId = event.target.closest("[data-decrease]")?.dataset.decrease;
   const orderTypeButton = event.target.closest("[data-order-type]");
 
-  if (addId) changeQuantity(addId, 1);
+  if (addId) {
+    const item = changeQuantity(addId, 1);
+    showAddedFeedback(item, event.target.closest("[data-add]"));
+  }
   if (increaseId) changeQuantity(increaseId, 1);
   if (decreaseId) changeQuantity(decreaseId, -1);
 
@@ -348,6 +396,10 @@ document.addEventListener("click", (event) => {
 clearOrder.addEventListener("click", () => {
   cart.clear();
   renderCart();
+});
+
+viewOrderButton.addEventListener("click", () => {
+  document.querySelector(".cart-panel").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 orderForm.addEventListener("input", updateMessageLinks);

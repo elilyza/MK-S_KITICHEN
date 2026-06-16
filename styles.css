@@ -603,7 +603,16 @@ textarea {
   padding: 0 18px;
 }
 
+.mobile-order-bar,
+.cart-toast {
+  display: none;
+}
+
 @media (max-width: 920px) {
+  body {
+    padding-bottom: 88px;
+  }
+
   .intro-band {
     grid-template-columns: 1fr;
     margin-top: -42px;
@@ -625,6 +634,111 @@ textarea {
   .food-gallery img:nth-child(1),
   .food-gallery img:nth-child(4) {
     grid-column: auto;
+  }
+
+  .mobile-order-bar {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 20;
+    display: none;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(255, 159, 28, 0.42);
+    border-radius: 8px;
+    background: #111111;
+    color: #ffffff;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+  }
+
+  .mobile-order-bar.is-visible {
+    display: grid;
+  }
+
+  .mobile-order-bar[hidden] {
+    display: none;
+  }
+
+  .mobile-order-bar span,
+  .mobile-order-bar strong {
+    display: block;
+  }
+
+  .mobile-order-bar span {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .mobile-order-bar strong {
+    margin-top: 2px;
+    color: #ff9f1c;
+    font-size: 1.28rem;
+  }
+
+  .mobile-order-bar button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #ff9f1c;
+    color: #111111;
+    cursor: pointer;
+    font-weight: 900;
+  }
+
+  .mobile-order-bar.pulse {
+    animation: cartPulse 520ms ease-out;
+  }
+
+  .cart-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 86px;
+    z-index: 21;
+    display: block;
+    max-width: min(360px, calc(100% - 32px));
+    padding: 11px 14px;
+    border-radius: 8px;
+    background: #ff9f1c;
+    color: #111111;
+    font-weight: 900;
+    text-align: center;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 12px);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .cart-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .add-button.is-added {
+    background: #ff9f1c;
+    color: #111111;
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+@keyframes cartPulse {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  45% {
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
   }
 }
 
